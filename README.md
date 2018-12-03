@@ -1,5 +1,5 @@
 
-AUTP. A simple reliable transport protocol. This protocol provides in-order, reliable delivery of UDP datagrams, and does so in the presence of packet loss, delay, corruption, duplication, and re-ordering.
+A simple reliable transport protocol. This protocol provides in-order, reliable delivery of UDP datagrams, and does so in the presence of packet loss, delay, corruption, duplication, and re-ordering.
 
 
 Protocol Description
@@ -26,7 +26,7 @@ An important limitation is the maximum size of the packets. Since UDP/IP introdu
 Receiver Specification
 =======================
 
-The AUTP receiver responds to data packets with cumulative acknowledgements. Upon receiving a message of type **start**, **data**, or **end**, the receiver generates an **ack** message with the sequence number it expects to receive next, which is the lowest sequence number not yet received.
+The receiver responds to data packets with cumulative acknowledgements. Upon receiving a message of type **start**, **data**, or **end**, the receiver generates an **ack** message with the sequence number it expects to receive next, which is the lowest sequence number not yet received.
 
 In other words, if it expects a packet of sequence number N, the following two scenarios may occur:
 1. If it receives a packet with sequence number not equal to N, it will send “ack|N”. 2. If it receives a packet with sequence number N, it will check for the highest sequence number (say M) of the in-order packets it has already received and send “ack|M+1”. For example, if it has already received packets N+1 and N+2 (i.e. M = N+2), but no others past N+2, then it will send “ack|N+3”.
@@ -49,5 +49,5 @@ Sender provides reliable service under the following network conditions:
 ```
 python Sender.py -f <input file> -a <destination address> -p <port>```
 
-Some final notes about the sender:• The sender implements a 500 ms retransmission timer to automatically retransmit packets that were never acknowledged (potentially due to ack packets being lost). Adaptive timeouts are employed.• The sender supports a window size of five packets (i.e., 5 unacknowledged packets).• The sender roughly meets or exceeds the performance (in both time and number of packets required to complete a transfer) of a properly implemented sliding- windows-based AUTP sender.• The sender is able to handle arbitrary message data (i.e., it is able to send an image (binary) file just as easily as a ASCII text file). If no input file is provided, sender reads read input from STDIN.• Any packets received with an invalid checksum are ignored.
+Some final notes about the sender:• The sender implements a 500 ms retransmission timer to automatically retransmit packets that were never acknowledged (potentially due to ack packets being lost). Adaptive timeouts are employed.• The sender supports a window size of five packets (i.e., 5 unacknowledged packets).• The sender roughly meets or exceeds the performance (in both time and number of packets required to complete a transfer) of a properly implemented sliding- windows-based sender.• The sender is able to handle arbitrary message data (i.e., it is able to send an image (binary) file just as easily as a ASCII text file). If no input file is provided, sender reads read input from STDIN.• Any packets received with an invalid checksum are ignored.
 
